@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Table Using Javascript</title>
+ 
+</head>
+<body>
+   <input type="text" id="searchInput" onkeyup="search()" placeholder="Search..">
+  <div id="data-list"></div>
+  <script>
+        var data = [{
+          "emp_id": 1001,
+          "emp_name": "Nagesh Y",
+          "emp_designation": "Manager",
+          "department": "Java2Novice",
+          "salary": 30000,
+          "direct_reports": [
+              "Nataraj G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "MG Road",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1002,
+          "emp_name": "Nilesh Z",
+          "emp_designation": "Support",
+          "department": "Java2Novice",
+          "salary": 25000,
+          "direct_reports": [
+              "Nataraj G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "CV Raman Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1003,
+          "emp_name": "Ramesh",
+          "emp_designation": "IT",
+          "department": "Java2Novice",
+          "salary": 35000,
+          "direct_reports": [
+              "Sumit G",
+              "Raju",
+              "Mahima"
+          ],
+          "address": {
+              "street": "CV Raman Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1004,
+          "emp_name": "Vivek",
+          "emp_designation": "IT",
+          "department": "Eloqua",
+          "salary": 12500,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Indira Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1005,
+          "emp_name": "Sumit G",
+          "emp_designation": "IT",
+          "department": "Eloqua",
+          "salary": 15000,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Indira Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1006,
+          "emp_name": "Mahima",
+          "emp_designation": "HR",
+          "department": "Q2c",
+          "salary": 125000,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Indira Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1007,
+          "emp_name": "Apoorva",
+          "emp_designation": "HR",
+          "department": "Q2c",
+          "salary": 120000,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Vivek Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1008,
+          "emp_name": "Apoorv",
+          "emp_designation": "HR",
+          "department": "Q2c",
+          "salary": 130000,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Kasturba Nagar",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1009,
+          "emp_name": "Shaktiman",
+          "emp_designation": "HR",
+          "department": "Q2c",
+          "salary": 20000000,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Mysore Road",
+              "city": "Bangalore"
+          }
+      },
+      {
+          "emp_id": 1010,
+          "emp_name": "Rohini",
+          "emp_designation": "Sales",
+          "department": "Q2c",
+          "salary": 200,
+          "direct_reports": [
+              "Sumit G",
+              "Kalyan",
+              "Mahitha"
+          ],
+          "address": {
+              "street": "Marathahalli",
+              "city": "Bangalore"
+          }
+      }
+  ]; 
+  // table headings
+  var columnHeadings = Object.keys(data[0]);
+   
+  // Get the count of columns.
+  var columnCount = columnHeadings.length;
+   
+  // The count of rows.
+  var rowCount = data.length;
+  var table = document.createElement('table');
+   
+  document.getElementById("data-list").appendChild(table);
+  
+  // Add the header row.
+   
+  var header = table.createTHead();
+   
+  var row = header.insertRow(-1);
+   
+  for (let i = 0; i < columnCount; i++) {
+   
+      var headerCell = document.createElement('th');
+      var dir = 1;
+   
+      headerCell.innerText = columnHeadings[i].toUpperCase();
+   // Append click listener to sort
+      headerCell.addEventListener('click', function () {
+          
+                  sort(table, i, 0);
+              });
+      row.appendChild(headerCell);
+   
+  }
+  // Create table body.
+   
+  var tBody = document.createElement('tbody');
+   
+  table.appendChild(tBody);
+  
+  // Add the data rows to the table body.
+   
+  for (var i = 0; i < rowCount; i++) { // each row
+     
+    row = tBody.insertRow(-1);
+     
+    for (var j = 0; j < columnCount; j++) { // each column
+     
+      var cell = row.insertCell(-1);
+   
+      cell.setAttribute('data-label', columnHeadings[j].toUpperCase());
+   
+      var obj = data[i];
+       if(typeof(obj[columnHeadings[j]])==="object"){
+        cell.innerText=Object.values(obj[columnHeadings[j]]).join(',');
+       }else{
+      cell.innerText = obj[columnHeadings[j]];
+       }
+   
+    }
+   
+  }
+  
+  
+   function search() {
+      // Declare variables
+      var input, filter, table, tr, td, i, j, tds, ths, matched;
+      input = document.getElementById("searchInput");
+      filter = input.value.toUpperCase();
+      tr = document.getElementsByTagName("tr");
+  
+      // Loop through all table rows, and hide
+      // those who don't match the search query
+      for (i = 0; i < tr.length; i++) {
+          tds = tr[i].getElementsByTagName("td");
+          ths = tr[i].getElementsByTagName("th");
+          matched = false;
+  
+          // leave the row header 
+          if (ths.length > 0) {
+              matched = true;
+          }
+          else {
+              for (j = 0; j < tds.length; j++) {
+                  td = tds[j];
+                  if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                      matched = true;
+                      break;
+                  }
+  
+              }
+          }
+          if (matched == true) {
+              tr[i].style.display = "";
+          }
+          else {
+              tr[i].style.display = "none";
+          }
+          }
+      }
+ function sort(table,n,dir) {
+  var table, rows, switching, i, x, y, shouldSwitch, switchcount = 0;
+  table = table;
+  switching = true;
+  //Set the sorting direction to ascending:
+  
+  /*Make a loop that will continue until
+  no switching has been done:*/
+  while (switching) {
+    //start by saying: no switching is done:
+    switching = false;
+    rows = table.getElementsByTagName("tr");
+    /*Loop through all table rows (except the
+    first, which contains table headers):*/
+    for (i = 1; i < (rows.length - 1); i++) {
+      //start by saying there should be no switching:
+      shouldSwitch = false;
+      /*Get the two elements you want to compare,
+      one from current row and one from the next:*/
+      x = rows[i].getElementsByTagName("td")[n];
+      y = rows[i + 1].getElementsByTagName("td")[n];
+      /*check if the two rows should switch place,
+      based on the direction, asc or desc:*/
+      if (dir == 0) {
+        if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch= true;
+          break;
+        }
+      } else if (dir == 1) {
+        if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+          //if so, mark as a switch and break the loop:
+          shouldSwitch = true;
+          break;
+        }
+      }
+    }
+    if (shouldSwitch) {
+      /*If a switch has been marked, make the switch
+      and mark that a switch has been done:*/
+      rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+      switching = true;
+      //Each time a switch is done, increase this count by 1:
+      switchcount ++;      
+    } else {
+      /*If no switching has been done AND the direction is "asc",
+      set the direction to "desc" and run the while loop again.*/
+      if (switchcount == 0 && dir == 0) {
+        dir = 1;
+        switching = true;
+      }
+    }
+  }
+}
+    </script>
+</body>
+</html>
